@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="47219d7e025949eeaad81948392543be" Name="Diagram1">
+        <EntityTypeShape EntityType="ShopZenModel.CategoryTable" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopZenModel.OrderDetailsTable" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopZenModel.OrderTable" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopZenModel.ProductTable" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopZenModel.ReviewTable" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopZenModel.UserTable" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="ShopZenModel.FK__ProductTa__Categ__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopZenModel.FK__OrderDeta__Order__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopZenModel.FK__OrderDeta__Produ__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopZenModel.FK__OrderTabl__UserI__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopZenModel.FK__ReviewTab__Produ__37A5467C" ManuallyRouted="true" >
+          <ConnectorPoint PointX="4.5" PointY="7.4417936197916656" />
+          <ConnectorPoint PointX="4.875" PointY="7.7905237747480474" />
+          <ConnectorPoint PointX="8.304166248999536" PointY="7.7905237747480474" />
+          <ConnectorPoint PointX="8.304166248999536" PointY="7.5571907552083335" />
+          <ConnectorPoint PointX="8.679166248999536" PointY="7.3059407552083337" />
+          <ConnectorPoint PointX="8.25" PointY="7.3059407552083337" />
+          <ConnectorPoint PointX="8.25" PointY="7.1821907552083335" />
+        </AssociationConnector>
+        <AssociationConnector Association="ShopZenModel.FK__ReviewTab__UserI__32E0915F" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ShopZenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CategoryTable">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrderDetailsTable">
+          <Key>
+            <PropertyRef Name="OrderDetailsId" />
+          </Key>
+          <Property Name="OrderDetailsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="OrderTable">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="CreateAt" Type="date" />
+        </EntityType>
+        <EntityType Name="ReviewTable">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Rating" Type="varchar" MaxLength="50" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+          <Property Name="ReviewDate" Type="date" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedAt" Type="date" />
+        </EntityType>
+        <Association Name="FK__OrderDeta__Order__2D27B809">
+          <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="1" />
+          <End Role="OrderDetailsTable" Type="Self.OrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderTable">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderDetailsTable">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__36B12243">
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="1" />
+          <End Role="OrderDetailsTable" Type="Self.OrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OrderDetailsTable">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderTabl__UserI__2A4B4B5E">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="OrderTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductTa__Categ__38996AB5">
+          <End Role="CategoryTable" Type="Self.CategoryTable" Multiplicity="1" />
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryTable">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReviewTab__Produ__37A5467C">
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="1" />
+          <End Role="ReviewTable" Type="Self.ReviewTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ReviewTable">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReviewTab__UserI__32E0915F">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="ReviewTable" Type="Self.ReviewTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ReviewTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShopZenModelStoreContainer">
+          <EntitySet Name="CategoryTable" EntityType="Self.CategoryTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetailsTable" EntityType="Self.OrderDetailsTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderTable" EntityType="Self.OrderTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReviewTable" EntityType="Self.ReviewTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__OrderDeta__Order__2D27B809" Association="Self.FK__OrderDeta__Order__2D27B809">
+            <End Role="OrderTable" EntitySet="OrderTable" />
+            <End Role="OrderDetailsTable" EntitySet="OrderDetailsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__36B12243" Association="Self.FK__OrderDeta__Produ__36B12243">
+            <End Role="ProductTable" EntitySet="ProductTable" />
+            <End Role="OrderDetailsTable" EntitySet="OrderDetailsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderTabl__UserI__2A4B4B5E" Association="Self.FK__OrderTabl__UserI__2A4B4B5E">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="OrderTable" EntitySet="OrderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductTa__Categ__38996AB5" Association="Self.FK__ProductTa__Categ__38996AB5">
+            <End Role="CategoryTable" EntitySet="CategoryTable" />
+            <End Role="ProductTable" EntitySet="ProductTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReviewTab__Produ__37A5467C" Association="Self.FK__ReviewTab__Produ__37A5467C">
+            <End Role="ProductTable" EntitySet="ProductTable" />
+            <End Role="ReviewTable" EntitySet="ReviewTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReviewTab__UserI__32E0915F" Association="Self.FK__ReviewTab__UserI__32E0915F">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="ReviewTable" EntitySet="ReviewTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShopZenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CategoryTable">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductTables" Relationship="Self.FK__ProductTa__Categ__38996AB5" FromRole="CategoryTable" ToRole="ProductTable" />
+        </EntityType>
+        <EntityType Name="OrderDetailsTable">
+          <Key>
+            <PropertyRef Name="OrderDetailsId" />
+          </Key>
+          <Property Name="OrderDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="OrderTable" Relationship="Self.FK__OrderDeta__Order__2D27B809" FromRole="OrderDetailsTable" ToRole="OrderTable" />
+          <NavigationProperty Name="ProductTable" Relationship="Self.FK__OrderDeta__Produ__36B12243" FromRole="OrderDetailsTable" ToRole="ProductTable" />
+        </EntityType>
+        <EntityType Name="OrderTable">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="0" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OrderDetailsTables" Relationship="Self.FK__OrderDeta__Order__2D27B809" FromRole="OrderTable" ToRole="OrderDetailsTable" />
+          <NavigationProperty Name="UserTable" Relationship="Self.FK__OrderTabl__UserI__2A4B4B5E" FromRole="OrderTable" ToRole="UserTable" />
+        </EntityType>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="CreateAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CategoryTable" Relationship="Self.FK__ProductTa__Categ__38996AB5" FromRole="ProductTable" ToRole="CategoryTable" />
+          <NavigationProperty Name="OrderDetailsTables" Relationship="Self.FK__OrderDeta__Produ__36B12243" FromRole="ProductTable" ToRole="OrderDetailsTable" />
+          <NavigationProperty Name="ReviewTables" Relationship="Self.FK__ReviewTab__Produ__37A5467C" FromRole="ProductTable" ToRole="ReviewTable" />
+        </EntityType>
+        <EntityType Name="ReviewTable">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Rating" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ReviewDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ProductTable" Relationship="Self.FK__ReviewTab__Produ__37A5467C" FromRole="ReviewTable" ToRole="ProductTable" />
+          <NavigationProperty Name="UserTable" Relationship="Self.FK__ReviewTab__UserI__32E0915F" FromRole="ReviewTable" ToRole="UserTable" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="OrderTables" Relationship="Self.FK__OrderTabl__UserI__2A4B4B5E" FromRole="UserTable" ToRole="OrderTable" />
+          <NavigationProperty Name="ReviewTables" Relationship="Self.FK__ReviewTab__UserI__32E0915F" FromRole="UserTable" ToRole="ReviewTable" />
+        </EntityType>
+        <Association Name="FK__ProductTa__Categ__38996AB5">
+          <End Role="CategoryTable" Type="Self.CategoryTable" Multiplicity="1" />
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryTable">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__2D27B809">
+          <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="1" />
+          <End Role="OrderDetailsTable" Type="Self.OrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderTable">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderDetailsTable">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__36B12243">
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="1" />
+          <End Role="OrderDetailsTable" Type="Self.OrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OrderDetailsTable">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderTabl__UserI__2A4B4B5E">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="OrderTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReviewTab__Produ__37A5467C">
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="1" />
+          <End Role="ReviewTable" Type="Self.ReviewTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ReviewTable">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReviewTab__UserI__32E0915F">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="ReviewTable" Type="Self.ReviewTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ReviewTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShopZenEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CategoryTables" EntityType="Self.CategoryTable" />
+          <EntitySet Name="OrderDetailsTables" EntityType="Self.OrderDetailsTable" />
+          <EntitySet Name="OrderTables" EntityType="Self.OrderTable" />
+          <EntitySet Name="ProductTables" EntityType="Self.ProductTable" />
+          <EntitySet Name="ReviewTables" EntityType="Self.ReviewTable" />
+          <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+          <AssociationSet Name="FK__ProductTa__Categ__38996AB5" Association="Self.FK__ProductTa__Categ__38996AB5">
+            <End Role="CategoryTable" EntitySet="CategoryTables" />
+            <End Role="ProductTable" EntitySet="ProductTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__2D27B809" Association="Self.FK__OrderDeta__Order__2D27B809">
+            <End Role="OrderTable" EntitySet="OrderTables" />
+            <End Role="OrderDetailsTable" EntitySet="OrderDetailsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__36B12243" Association="Self.FK__OrderDeta__Produ__36B12243">
+            <End Role="ProductTable" EntitySet="ProductTables" />
+            <End Role="OrderDetailsTable" EntitySet="OrderDetailsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderTabl__UserI__2A4B4B5E" Association="Self.FK__OrderTabl__UserI__2A4B4B5E">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="OrderTable" EntitySet="OrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReviewTab__Produ__37A5467C" Association="Self.FK__ReviewTab__Produ__37A5467C">
+            <End Role="ProductTable" EntitySet="ProductTables" />
+            <End Role="ReviewTable" EntitySet="ReviewTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReviewTab__UserI__32E0915F" Association="Self.FK__ReviewTab__UserI__32E0915F">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="ReviewTable" EntitySet="ReviewTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShopZenModelStoreContainer" CdmEntityContainer="ShopZenEntities1">
+          <EntitySetMapping Name="CategoryTables">
+            <EntityTypeMapping TypeName="ShopZenModel.CategoryTable">
+              <MappingFragment StoreEntitySet="CategoryTable">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetailsTables">
+            <EntityTypeMapping TypeName="ShopZenModel.OrderDetailsTable">
+              <MappingFragment StoreEntitySet="OrderDetailsTable">
+                <ScalarProperty Name="OrderDetailsId" ColumnName="OrderDetailsId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderTables">
+            <EntityTypeMapping TypeName="ShopZenModel.OrderTable">
+              <MappingFragment StoreEntitySet="OrderTable">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTables">
+            <EntityTypeMapping TypeName="ShopZenModel.ProductTable">
+              <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReviewTables">
+            <EntityTypeMapping TypeName="ShopZenModel.ReviewTable">
+              <MappingFragment StoreEntitySet="ReviewTable">
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTables">
+            <EntityTypeMapping TypeName="ShopZenModel.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
