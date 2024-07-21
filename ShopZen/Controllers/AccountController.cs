@@ -28,11 +28,33 @@ namespace ShopZen.Controllers
                 var user = db.UserTables.FirstOrDefault(x => x.Email == model.Email);
                 if (user != null && user.Password == model.Password)
                 {
-                    return RedirectToAction("Index","Home");
+					var user1 = db.UserTables.FirstOrDefault(x => x.Email == model.Email);
+					var userId = user?.UserId; 
+					Session["UserId"] = user.UserId;
+					return RedirectToAction("result", "Product");
                 }
                 else { ModelState.AddModelError("", "Invalid login attempt."); }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult CreateAccount() 
+        { 
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAccount(UserTable usermodel)
+        {
+            if (ModelState.IsValid)
+            {
+                usermodel.CreatedAt = DateTime.Now;
+                db.UserTables.Add(usermodel);
+                db.SaveChanges();
+                return RedirectToAction("Login", "Account");
+            }
+            return View(usermodel);
         }
     }
 }

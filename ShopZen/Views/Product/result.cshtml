@@ -1,0 +1,77 @@
+﻿@model ShopZen.ViewModels.MainHomeViewModel
+
+@{ 
+    var userId = ViewData["User"] as IEnumerable<ShopZen.Models.ProductTable>;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ShopZen - Products and Categories</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .product-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .product-actions {
+            margin-top: 10px;
+        }
+
+        .category-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+            .category-list li {
+                padding: 5px 0;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Products</h1>
+        <h1>
+            @userId
+        </h1>
+        <!-- Search Form -->
+        <form class="form-inline mb-3" method="get" action="@Url.Action("result", "Product")">
+            <input type="text" name="searchQuery" class="form-control mr-2" placeholder="Search products" value="@Request.QueryString["searchQuery"]">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <!-- Products Grid -->
+        <div class="row">
+            @foreach (var product in Model.productTable)
+            {
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <h5>@product.ProductName</h5>
+                        <p>Rs: @product.Price</p>
+                        <p>@product.Description</p>
+                        <div class="product-actions">
+                            <a href="/Product/result" class="btn btn-danger btn-sm">BUY</a>
+                            <form class="form-inline mb-3" method="get" action="@Url.Action("result", "Product")">
+                                <button type="submit" class="btn btn-primary">ADD TO CART</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <h1 class="mt-5">Categories</h1>
+        <ul class="category-list">
+            @foreach (var category in Model.categoriesTable)
+            {
+                <li>@category.CategoryName</li>
+            }
+        </ul>
+    </div>
+</body>
+</html>

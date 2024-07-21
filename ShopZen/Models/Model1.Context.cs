@@ -33,5 +33,7 @@ namespace ShopZen.Models
         public virtual DbSet<UserTable> UserTables { get; set; }
 
 		public System.Data.Entity.DbSet<ShopZen.ViewModels.LoginViewModel> LoginViewModels { get; set; }
+
+		public System.Data.Entity.DbSet<ShopZen.ViewModels.MainHomeViewModel> MainHomeViewModels { get; set; }
 	}
 }
