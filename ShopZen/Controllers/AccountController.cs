@@ -25,20 +25,40 @@ namespace ShopZen.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = db.UserTables.FirstOrDefault(x => x.Email == model.Email);
-                if (user != null && user.Password == model.Password)
-                {
-					var user1 = db.UserTables.FirstOrDefault(x => x.Email == model.Email);
-					var userId = user?.UserId; 
-					Session["UserId"] = user.UserId;
+				var user = db.UserTables.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+				if (user != null)
+				{
+					// Set the session value
+					Session["UserName"] = user.FirstName; // Assuming UserTable has a UserName property
+
+					// Redirect to a secure page or home page after login
 					return RedirectToAction("result", "Product");
-                }
-                else { ModelState.AddModelError("", "Invalid login attempt."); }
-            }
+				}
+				else
+				{
+					ModelState.AddModelError("", "Invalid login attempt.");
+				}
+			}
             return View(model);
         }
 
-        [HttpGet]
+		public ActionResult Logout()
+		{
+            Session.Clear();
+            Session.Abandon();
+			if (Request.Cookies[".ASPXAUTH"] != null)
+			{
+				var cookie = new HttpCookie(".ASPXAUTH")
+				{
+					Expires = DateTime.Now.AddDays(-1),
+					Value = null
+				};
+				Response.Cookies.Add(cookie);
+			}
+			return RedirectToAction("Login", "Account");
+		}
+
+		[HttpGet]
         public ActionResult CreateAccount() 
         { 
             return View();

@@ -132,6 +132,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainHomeViewModelsController.cs" />
+    <Compile Include="Controllers\OrderTestController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductTablesController.cs" />
     <Compile Include="Controllers\UserTablesController.cs" />
@@ -270,7 +271,6 @@
     <Content Include="Views\UserTables\Details.cshtml" />
     <Content Include="Views\UserTables\Edit.cshtml" />
     <Content Include="Views\UserTables\Index.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\CreateAccount.cshtml" />
     <Content Include="Views\MainHomeViewModels\Index.cshtml" />
     <Content Include="Views\ProductTables\Create.cshtml" />
@@ -281,6 +281,12 @@
     <Content Include="Views\MainHomeViewModels\Home.cshtml" />
     <Content Include="Views\Product\result.cshtml" />
     <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\OrderTest\Create.cshtml" />
+    <Content Include="Views\OrderTest\Delete.cshtml" />
+    <Content Include="Views\OrderTest\Details.cshtml" />
+    <Content Include="Views\OrderTest\Edit.cshtml" />
+    <Content Include="Views\OrderTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,9 +17,27 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "result", "Product", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (Session["UserName"] != null)
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link">Welcome, @Session["UserName"]</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("CreateAccount", "Account")">Create Account</a>
+                        </li>
+                    }
+                    <li class="nav-item">uc
+                        <a class="nav-link" href="@Url.Action("Product", "View")">Cart</a>
+                    </li>
                 </ul>
             </div>
         </div>

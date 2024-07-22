@@ -1,9 +1,8 @@
 ﻿@model ShopZen.ViewModels.MainHomeViewModel
 
-@{ 
+@{
     var userId = ViewData["User"] as IEnumerable<ShopZen.Models.ProductTable>;
 }
-
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +16,13 @@
             margin-bottom: 20px;
             padding: 15px;
             background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
 
         .product-actions {
             margin-top: 10px;
@@ -30,15 +35,43 @@
 
             .category-list li {
                 padding: 5px 0;
+                font-weight: bold;
+                color: #007bff;
             }
+
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+            .header h1 {
+                margin: 0;
+            }
+
+        .quantity-input {
+            width: 70px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Products</h1>
-        <h1>
-            @userId
-        </h1>
+        <div class="header">
+            <h1>ShopZen - Products and Categories</h1>
+        </div>
+
+        <!-- User ID Display (if needed) -->
+        @if (userId != null)
+        {
+            <div class="alert alert-info">
+                <strong>User ID:</strong> @userId
+            </div>
+        }
+
         <!-- Search Form -->
         <form class="form-inline mb-3" method="get" action="@Url.Action("result", "Product")">
             <input type="text" name="searchQuery" class="form-control mr-2" placeholder="Search products" value="@Request.QueryString["searchQuery"]">
@@ -46,26 +79,45 @@
         </form>
 
         <!-- Products Grid -->
+        <h2 class="mt-4">Products</h2>
         <div class="row">
             @foreach (var product in Model.productTable)
             {
                 <div class="col-md-4">
                     <div class="product-card">
                         <h5>@product.ProductName</h5>
-                        <p>Rs: @product.Price</p>
-                        <p>@product.Description</p>
+                        <p><strong>Price:</strong> Rs. @product.Price</p>
+                        <p><strong>Description:</strong> @product.Description</p>
                         <div class="product-actions">
-                            <a href="/Product/result" class="btn btn-danger btn-sm">BUY</a>
-                            <form class="form-inline mb-3" method="get" action="@Url.Action("result", "Product")">
-                                <button type="submit" class="btn btn-primary">ADD TO CART</button>
+                            <input type="number" id="quantity-@product.ProductId" name="quantity" class="form-control quantity-input" value="1" min="1" />
+
+                            <form id="buyForm-@product.ProductId" class="form-inline mb-3" method="post" action="@Url.Action("Buy", "Product")">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <input type="hidden" id="buyQuantity-@product.ProductId" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-danger btn-sm">Buy</button>
+                            </form>
+
+                            <form id="cartForm-@product.ProductId" class="form-inline mb-3" method="post" action="@Url.Action("AddToCart", "Product")">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <input type="hidden" id="cartQuantity-@product.ProductId" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
                             </form>
                         </div>
                     </div>
                 </div>
             }
         </div>
+        <script>document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('input', function () {
+            var productId = this.id.split('-')[1];
+            var quantity = this.value;
+            document.querySelector(`#buyQuantity-${productId}`).value = quantity;
+            document.querySelector(`#cartQuantity-${productId}`).value = quantity;
+        });
+    });</script>
 
-        <h1 class="mt-5">Categories</h1>
+        <!-- Categories List -->
+        <h2 class="mt-5">Categories</h2>
         <ul class="category-list">
             @foreach (var category in Model.categoriesTable)
             {

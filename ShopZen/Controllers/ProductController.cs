@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 using ShopZen.Models;
 using ShopZen.ViewModels;
 
@@ -30,13 +31,6 @@ namespace ShopZen.Controllers
         {
             var productsQuery = from a in db.ProductTables select a;
             var categories = db.CategoryTables.ToList();
-            var userId = Session["UserId"];
-			if (userId != null)
-            {
-                // Use the userId as needed
-                ViewBag.Message = $"Logged in user ID: {userId}";
-                ViewData["User"] = userId;
-            }
 
             if (!string.IsNullOrEmpty(searchQuery))
             {
@@ -47,7 +41,7 @@ namespace ShopZen.Controllers
                                 category.CategoryName.Contains(searchQuery)
                                 select product;
             }
-			var products = productsQuery.ToList();
+            var products = productsQuery.ToList();
 
 
             var model = new MainHomeViewModel
@@ -58,30 +52,72 @@ namespace ShopZen.Controllers
 
             return View(model);
         }
-    
 
-		// GET: Product
+        public ActionResult Buy(int productId, int quantity)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddToCart(int productId, int quantity)
+        {
+
+            if (Session["UserName"] != null)
+            {
+                string userName = Session["UserName"].ToString();
+                var user = db.UserTables.FirstOrDefault(u => u.FirstName.Equals(userName));
+
+                if (user != null)
+                {
+                    int userId = user.UserId;
+                    var product = db.ProductTables.FirstOrDefault(p => p.ProductId == productId);
+
+                    if (product != null)
+                    {
+                        var price = product.Price;
+                        var total = price * quantity;
+
+                        OrderTable orderTable = new OrderTable()
+                        {
+                            OrderId = userId,
+                            UserId = userId,
+                            OrderDate = DateTime.Now,
+                            TotalAmount = total,
+                            Status = "Add to Cart"
+                        };
+                        db.OrderTables.Add(orderTable);
+                        db.SaveChanges();
+                        return RedirectToAction("result", "Product");
+                    }
+                }
+            }
+			return RedirectToAction("Login", "Account");
+		}
 
 
-		//public ActionResult result(string searchQuery)
-		//      {
-		//          var db= new ShopZenEntities1();
-		//          var product = (from a in db.ProductTables select a).ToList();
-		//	var category = (from c in db.CategoryTables select c).ToList();
 
-		//	if (!string.IsNullOrEmpty(searchQuery))
-		//          {
-		//              product = product.Where(x => x.ProductName.Contains(searchQuery)).ToList();
-		//          }
-		//	var model = new MainHomeViewModel
-		//	{
-		//		productTable = product,
-		//		categoriesTable = category
-		//	};
-		//          return View(model);
-		//      }
+        // GET: Product
 
-		public ActionResult Index()
+
+        //public ActionResult result(string searchQuery)
+        //      {
+        //          var db= new ShopZenEntities1();
+        //          var product = (from a in db.ProductTables select a).ToList();
+        //	var category = (from c in db.CategoryTables select c).ToList();
+
+        //	if (!string.IsNullOrEmpty(searchQuery))
+        //          {
+        //              product = product.Where(x => x.ProductName.Contains(searchQuery)).ToList();
+        //          }
+        //	var model = new MainHomeViewModel
+        //	{
+        //		productTable = product,
+        //		categoriesTable = category
+        //	};
+        //          return View(model);
+        //      }
+
+        public ActionResult Index()
         {
             return View();
         }
